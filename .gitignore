@@ -1,0 +1,6 @@
+# ignore node_modules and database directories
+node_modules
+database
+
+# Keep environment variables out of version control
+.env

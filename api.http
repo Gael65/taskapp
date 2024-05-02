@@ -1,0 +1,52 @@
+### Crear usuario
+POST http://localhost:1234/user/create
+Content-Type: application/json
+
+{
+  "name": "Gael Cervantes",
+  "email": "gaelo@email.com",
+  "password": "newpass123#"
+}
+
+### Login de usuario
+POST http://localhost:1234/user/login
+Content-Type: application/json
+
+{
+  "email": "gael@email.com",
+  "password": "newPass123#"
+}
+
+### Recuperar las tasks
+GET http://localhost:1234/task
+
+### Crear una nueva task
+POST http://localhost:1234/task
+Content-Type: application/json
+
+{
+  "title": "Ir a la tienda",
+  "description": "Comprar comida para los perritos"
+}
+
+### Modificar una task completamente
+PUT http://localhost:1234/task/T0007
+Content-Type: application/json
+
+{
+    "id": "T0004",
+    "description": "Sacar a pasear a mis mascotas",
+    "created": "01-03-2024",
+    "state": "En curso"
+  }
+
+### Modificar parcialmente una task
+PATCH http://localhost:1234/task/T0004
+Content-Type: application/json
+
+{
+  "state": "Finalizada"
+}
+
+### Eliminar una task
+DELETE http://localhost:1234/task/T0007
