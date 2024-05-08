@@ -1,0 +1,449 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+      "title": "TaskApp",
+      "description": "Aplicación de tareas",
+      "version": "1.0.0"
+  },
+  "servers": [
+      {
+          "url": "https://taskapp-ty6k.onrender.com"
+      }
+  ],
+  "tags": [
+      {
+          "name": "Auth"
+      },
+      {
+          "name": "Task"
+      }
+  ],
+  "paths": {
+      "/user": {
+          "post": {
+              "tags": [
+                  "Auth"
+              ],
+              "requestBody": {
+                  "description": "Sign up endpoint",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/SignupRequest"
+                          }
+                      }
+                  },
+                  "required": true
+              },
+              "responses": {
+                  "201": {
+                      "description": "Request response",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "$ref": "#/components/schemas/AuthResponse"
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "/user/login": {
+          "post": {
+              "tags": [
+                  "Auth"
+              ],
+              "requestBody": {
+                  "description": "Login endpoint",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/LoginRequest"
+                          }
+                      }
+                  },
+                  "required": true
+              },
+              "responses": {
+                  "200": {
+                      "description": "Login successful",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "$ref": "#/components/schemas/AuthResponse"
+                              }
+                          }
+                      }
+                  },
+                  "404": {
+                    "description": "Login failed",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Error"
+                            }
+                        }
+                    }
+                  }
+              }
+          }
+      },
+      "/user/renew": {
+        "get": {
+            "tags": [
+                "Auth"
+            ],
+            "parameters": [
+              {
+                  "in": "header",
+                  "name": "Authorization",
+                  "schema": {
+                      "type": "string"
+                  }
+              }
+          ],
+          "security": [
+              {
+                  "BearerAuth": []
+              }
+          ],
+            "responses": {
+                "200": {
+                    "description": "Renew access token",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthResponse"
+                            }
+                        }
+                    }
+                },
+                "401": {
+                  "description": "Failed renew access token",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/Error"
+                          }
+                      }
+                  }
+                }
+            }
+        }
+    },
+      "/task": {
+          "get": {
+              "tags": [
+                  "Task"
+              ],
+              "parameters": [
+                  {
+                      "in": "header",
+                      "name": "Authorization",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "security": [
+                  {
+                      "BearerAuth": []
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Read tasks",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "type": "array",
+                                  "items": {
+                                      "$ref": "#/components/schemas/Task"
+                                  }
+                              }
+                          }
+                      }
+                  },
+                  "401": {
+                    "description": "Failed fetching tasks",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Error"
+                            }
+                        }
+                    }
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Task"
+              ],
+              "parameters": [
+                  {
+                      "in": "header",
+                      "name": "Authorization",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "security": [
+                  {
+                      "BearerAuth": []
+                  }
+              ],
+              "requestBody": {
+                  "description": "Create Task",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/CreateTaskRequest"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "201": {
+                      "description": "Request response",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "$ref": "#/components/schemas/Task"
+                              }
+                          }
+                      }
+                  },
+                  "401": {
+                    "description": "Failed creating task",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Error"
+                            }
+                        }
+                    }
+                  }
+              }
+          }
+      },
+      "/task/{id}": {
+          "patch": {
+              "tags": [
+                  "Task"
+              ],
+              "security": [
+                  {
+                      "BearerAuth": []
+                  }
+              ],
+              "parameters": [
+                  {
+                      "in": "header",
+                      "name": "Authorization",
+                      "schema": {
+                          "type": "string"
+                      }
+                  },
+                  {
+                      "in": "path",
+                      "name": "id",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "required": true
+                  }
+              ],
+              "requestBody": {
+                  "description": "Update Task",
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "$ref": "#/components/schemas/UpdateTaskRequest"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Request response",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "$ref": "#/components/schemas/Task"
+                              }
+                          }
+                      }
+                  },
+                  "401": {
+                    "description": "Failed updating task",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Error"
+                            }
+                        }
+                    }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Task"
+              ],
+              "security": [
+                  {
+                      "BearerAuth": []
+                  }
+              ],
+              "parameters": [
+                  {
+                      "in": "header",
+                      "name": "Authorization",
+                      "schema": {
+                          "type": "string"
+                      }
+                  },
+                  {
+                      "in": "path",
+                      "name": "id",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Request response",
+                      "content": {
+                          "application/json": {
+                              "schema": {
+                                  "$ref": "#/components/schemas/Task"
+                              }
+                          }
+                      }
+                  },
+                  "401": {
+                    "description": "Failed deleting task",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Error"
+                            }
+                        }
+                    }
+                  }
+              }
+          }
+      }
+  },
+  "components": {
+      "schemas": {
+          "Task": {
+              "type": "object",
+              "properties": {
+                  "id": {
+                      "type": "integer"
+                  },
+                  "title": {
+                      "type": "string"
+                  },
+                  "description": {
+                      "type": "string"
+                  },
+                  "completed": {
+                    "type": "boolean"
+                  },
+                  "createdDate": {
+                    "type": "string"
+                },
+                  "userId": {
+                      "type": "integer"
+                  }
+              }
+          },
+          "LoginRequest": {
+              "type": "object",
+              "properties": {
+                  "email": {
+                      "type": "string"
+                  },
+                  "password": {
+                      "type": "string"
+                  }
+              }
+          },
+          "AuthResponse": {
+              "type": "object",
+              "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                      "type": "string"
+                  },
+                  "email": {
+                      "type": "string"
+                  },
+                  "accessToken": {
+                      "type": "string"
+                  }  
+              }
+          },
+          "SignupRequest": {
+              "type": "object",
+              "properties": {
+                  "name": {
+                      "type": "string"
+                  },
+                  "email": {
+                      "type": "string"
+                  },
+                  "password": {
+                      "type": "string"
+                  }
+              }
+          },
+          "CreateTaskRequest": {
+              "type": "object",
+              "properties": {
+                  "title": {
+                      "type": "string"
+                  },
+                  "description": {
+                      "type": "string"
+                  }
+              }
+          },
+          "UpdateTaskRequest": {
+              "type": "object",
+              "properties": {
+                  "title": {
+                      "type": "string"
+                  },
+                  "description": {
+                      "type": "string"
+                  }
+              }
+          },
+          "Error": {
+              "type": "object",
+              "properties": {
+                  "error": {
+                      "type": "string"
+                  }
+              }
+          }
+      },
+      "securitySchemes": {
+          "BearerAuth": {
+              "type": "apiKey",
+              "in": "header",
+              "name": "Authorization"
+          }
+      }
+  }
+}

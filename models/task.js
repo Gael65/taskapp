@@ -37,9 +37,9 @@ export class TaskModel {
       await prisma.task.delete({
         where: { id: parseInt(id) }
       })
-      return true
+      return { success: true, id }
     } catch (e) {
-      return false
+      return { success: false, id: null }
     }
   }
 }

@@ -41,10 +41,10 @@ export class TaskController {
   static async delete (req, res) {
     const { id } = req.params
 
-    const result = await TaskModel.delete({ id })
+    const { success, id: deletedId } = await TaskModel.delete({ id })
 
-    if (!result) return res.status(404).json({ message: 'Task not found!' })
+    if (!success) return res.status(404).json({ message: 'Task not found!' })
 
-    res.json({ message: 'Task deleted' })
+    res.json({ id: deletedId })
   }
 }
